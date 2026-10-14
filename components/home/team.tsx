@@ -21,22 +21,22 @@ export function Team() {
   return (
     <section id="people" data-stop className="reveal bg-white -mb-8">
       <TiltedGridHero images={frames} axis={46.44} tileHeight={27.44} speed={11} className="h-[720px] w-full bg-white">
-        <div className="relative z-10 h-full text-center">
-          <p className="people-tilt-kicker">
+        <div className="pointer-events-none relative z-10 h-full text-center">
+          <p className="people-tilt-kicker pointer-events-auto">
             <i />
             The team
             <i />
           </p>
-          <h2 className="people-tilt-title">
+          <h2 className="people-tilt-title pointer-events-auto mx-auto w-fit">
             The people behind
             <br />
             every <span className="people-tilt-accent">partner</span>.
           </h2>
           <div className="people-tilt-foot absolute inset-x-0" style={{ top: "calc(46.44% + 21.11cqh)" }}>
-            <p className="people-tilt-caption">
+            <p className="people-tilt-caption pointer-events-auto">
               Established in 2019, VS One supplies globally acclaimed IT products and solutions to more than 200 partners across Sri Lanka. The team stays with those partners for the long term, with support, technical consultancy and training that help them grow.
             </p>
-            <Link href="/contact" className="btn btn-ink people-tilt-cta">
+            <Link href="/contact" className="btn btn-ink people-tilt-cta pointer-events-auto">
               Contact us
               <span className="dot">
                 <Symbol name="arrow_forward" className="text-[16px]" />

@@ -1,7 +1,9 @@
 "use client";
 
 import * as React from "react";
+import { createPortal } from "react-dom";
 import { cn } from "@/lib/utils";
+import { Symbol } from "../symbol";
 
 /* ── the curved row ──────────────────────────────────────────────
  * Scroll Tilted Grid turned on its side, with the tilt drawn as a curve.
@@ -155,6 +157,63 @@ export function TiltedGridHero({
   // only changes when the tile wraps, which is out of sight, so a resize
   // never swaps an image on screen either.
   const [shown, setShown] = React.useState<Record<number, number>>({});
+  const [hover, setHover] = React.useState(false);
+  const [drag, setDrag] = React.useState(false);
+  const [open, setOpen] = React.useState<TiltedGridImage | null>(null);
+  const paused = hover || drag || open != null;
+  const dragRef = React.useRef<{
+    x: number;
+    moved: boolean;
+    width: number;
+    anims: Animation[];
+    times: number[];
+  } | null>(null);
+  const suppressClick = React.useRef(false);
+
+  // One tile of travel takes `speed` seconds. Dragging follows the pointer,
+  // so a move to the right scrubs the loop backward.
+  const scrub = (event: React.PointerEvent<HTMLButtonElement>) => {
+    const dragState = dragRef.current;
+    if (!dragState) return;
+    const dx = event.clientX - dragState.x;
+    if (Math.abs(dx) > 8) dragState.moved = true;
+    const shift = -(dx / dragState.width) * speed * 1000;
+    dragState.anims.forEach((anim, index) => {
+      anim.currentTime = dragState.times[index] + shift;
+    });
+  };
+
+  const onPointerDown = (event: React.PointerEvent<HTMLButtonElement>) => {
+    if (event.button !== 0) return;
+    const root = ref.current;
+    if (!root) return;
+    const anims = [...root.querySelectorAll("button.tgh-hit")]
+      .map((node) => node.getAnimations()[0])
+      .filter((anim): anim is Animation => Boolean(anim));
+    dragRef.current = {
+      x: event.clientX,
+      moved: false,
+      width: Math.max(1, event.currentTarget.offsetWidth),
+      anims,
+      times: anims.map((anim) => Number(anim.currentTime) || 0),
+    };
+    try {
+      event.currentTarget.setPointerCapture(event.pointerId);
+    } catch {
+      /* A synthetic pointer has nothing to capture. */
+    }
+    setDrag(true);
+  };
+
+  const onPointerUp = (event: React.PointerEvent<HTMLButtonElement>) => {
+    if (!dragRef.current) return;
+    if (dragRef.current.moved) suppressClick.current = true;
+    dragRef.current = null;
+    if (event.currentTarget.hasPointerCapture?.(event.pointerId)) {
+      event.currentTarget.releasePointerCapture(event.pointerId);
+    }
+    setDrag(false);
+  };
 
   React.useEffect(() => {
     const el = ref.current;
@@ -209,7 +268,9 @@ export function TiltedGridHero({
     // Pausing rather than removing the motion keeps the band whole: every
     // tile is already placed by its negative delay, so it freezes as a
     // finished still.
-    `@media(prefers-reduced-motion:reduce){.${tile}{animation-play-state:paused}}`;
+    `@media(prefers-reduced-motion:reduce){.${tile}{animation-play-state:paused}}` +
+    `.tgh-paused .${tile}{animation-play-state:paused}` +
+    `.tgh-hit{pointer-events:auto;appearance:none;-webkit-appearance:none;touch-action:pan-y;user-select:none}`;
 
   const share = aspectRatio / SLICES;
   const duration = columns * speed;
@@ -220,14 +281,13 @@ export function TiltedGridHero({
   return (
     <div
       ref={ref}
-      className={cn("relative overflow-hidden", className)}
+      className={cn("relative overflow-hidden", paused && "tgh-paused", className)}
       {...props}
       style={{ containerType: "size", ...props.style }}
     >
       <style>{css}</style>
 
       <div
-        aria-hidden
         className="pointer-events-none absolute inset-0 transition-opacity duration-500"
         style={{
           opacity: layout ? 1 : 0,
@@ -245,17 +305,40 @@ export function TiltedGridHero({
           const first = columns - 1 - t;
           const img = images[(shown[t] ?? first) % Math.max(images.length, 1)];
           return (
-            <div
+            <button
               key={t}
-              className={cn(tile, "absolute")}
+              type="button"
+              className={cn(
+                tile,
+                "tgh-hit absolute border-0 bg-transparent p-0",
+                drag ? "cursor-grabbing" : "cursor-grab",
+              )}
               style={{
                 left: `calc(50% - ${u(aspectRatio / 2)})`,
                 top: `calc(${axis}% - ${u(0.5)})`,
                 width: u(aspectRatio),
                 height: u(1),
                 transformStyle: "preserve-3d",
-                // Tile t starts t tiles along the loop.
+                // Tile t starts t tiles along the loop. Play state is its
+                // own longhand so a hover pause does not restart the loop.
                 animation: `${orbit} ${duration}s linear ${-t * speed}s infinite`,
+                animationPlayState: paused ? "paused" : "running",
+              }}
+              aria-label={img?.alt ? `View photo: ${img.alt}` : "View photo"}
+              onMouseEnter={() => setHover(true)}
+              onMouseLeave={() => setHover(false)}
+              onFocus={() => setHover(true)}
+              onBlur={() => setHover(false)}
+              onPointerDown={onPointerDown}
+              onPointerMove={scrub}
+              onPointerUp={onPointerUp}
+              onPointerCancel={onPointerUp}
+              onClick={() => {
+                if (suppressClick.current) {
+                  suppressClick.current = false;
+                  return;
+                }
+                if (img) setOpen(img);
               }}
               onAnimationIteration={(e) => {
                 // elapsedTime counts whole loops, missed events included.
@@ -303,13 +386,53 @@ export function TiltedGridHero({
                   ) : null}
                 </div>
               ))}
-            </div>
+            </button>
           );
         })}
       </div>
 
       {children}
+      {open ? <PhotoLightbox image={open} onClose={() => setOpen(null)} /> : null}
     </div>
+  );
+}
+
+function PhotoLightbox({ image, onClose }: { image: TiltedGridImage; onClose: () => void }) {
+  const closeRef = React.useRef(onClose);
+  closeRef.current = onClose;
+
+  React.useEffect(() => {
+    const onKey = (event: KeyboardEvent) => {
+      if (event.key === "Escape") closeRef.current();
+    };
+    const previous = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    document.addEventListener("keydown", onKey);
+    return () => {
+      document.body.style.overflow = previous;
+      document.removeEventListener("keydown", onKey);
+    };
+  }, []);
+
+  if (typeof document === "undefined") return null;
+
+  return createPortal(
+    <div className="fixed inset-0 z-[90] flex items-center justify-center p-4 sm:p-8" role="dialog" aria-modal="true" aria-label={image.alt || "Photo"}>
+      <button type="button" className="absolute inset-0 bg-[#0f1115]/80" aria-label="Close photo" onClick={onClose} />
+      <figure className="relative z-10 m-0 flex max-w-[min(1100px,100%)] flex-col items-center">
+        <img src={image.src} alt={image.alt || ""} className="max-h-[82vh] w-auto max-w-full rounded-[14px] bg-white object-contain shadow-[0_24px_80px_-24px_rgba(0,0,0,0.65)]" />
+        {image.alt ? <figcaption className="mt-3 max-w-[62ch] text-center font-body-sm text-body-sm text-white/80">{image.alt}</figcaption> : null}
+        <button
+          type="button"
+          onClick={onClose}
+          aria-label="Close photo"
+          className="absolute -right-3 -top-3 flex h-10 w-10 items-center justify-center rounded-full bg-white text-graphite shadow-md"
+        >
+          <Symbol name="close" className="text-[20px]" />
+        </button>
+      </figure>
+    </div>,
+    document.body,
   );
 }
 
