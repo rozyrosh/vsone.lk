@@ -1,0 +1,15 @@
+node_modules
+.next
+out
+.env
+.env.local
+data/*.json
+*.log
+stitch.html
+stitch-body.txt
+sec-*.html
+silk.svg
+_parse.js
+_split.js
+_svg.js
+review/

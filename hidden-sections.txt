@@ -1,0 +1,32 @@
+Hidden sections
+================
+
+These parts are still in the source and are not shown on the site.
+Uncomment the matching block to show one again.
+
+1. Products page catalog header
+   Page: /products
+   File: app/products/page.tsx
+   What is hidden: the top block with the red "Catalog" label, the heading "Partner product catalog", and the line "Sample photography for the lines VS One distributes. Availability is confirmed in the partner portal. Prices are not listed here."
+   When a category filter is active, that heading changes to the category name.
+   To show it again: uncomment the section in app/products/page.tsx and add categoryLabel back to the import from @/lib/content.
+
+2. Homepage allocation hold
+   Page: /
+   File: app/page.tsx
+   Component: components/home/portal.tsx
+   What is hidden: the "How allocation works" block, with the heading "Hold to allocate a unit." and the press-and-hold control. The four steps beside it are Stock checked, Credit cleared, Serial verified, and Dispatched, plus the "Open the partner portal" link.
+   To show it again: uncomment the Portal import and the <Portal /> block in app/page.tsx.
+
+3. Homepage desk section, replaced by Services
+   Page: /
+   File: components/home/pillars.tsx and lib/content.ts (pillars)
+   What was removed: the intro "What the desk does" / "Six things a partner stops chasing." / "The six jobs a partner used to chase, handled from one desk."
+   The six bands were:
+   01 Allocation — One desk for the whole bill of materials. Servers, storage, switches, firewalls, notebooks, UPS and the software that runs on them, allocated from one desk in Colombo. One quote, one invoice, one delivery. Link: See the catalog → /products. Accent word: One.
+   02 Logistics — Island-wide in 24 to 48 hours. Regional hubs and dedicated channel managers move hardware to every province. Authorized partners get a 24 to 48 hour turnaround from the Colombo hub. Link: View the dispatch hubs → /contact#hubs. Accent word: Island-wide.
+   03 Portal — The ERP partner portal. Sri Lanka's first fully integrated distribution portal: live stock, warranty tracking, credit lines, serial validation and shipment status, in one reseller login. Link: Open the portal → /partner-portal. Accent word: portal.
+   04 Pre-sales — Engineers on your bid. Certified L3 and cloud engineers run sandbox labs and architecture demos so integrators can bid telecom, banking and government work with a tested design. Link: Talk to engineering → /contact. Accent word: Engineers.
+   05 After sales — Warranty, DOA and RMA. The Colombo convenience center handles repairs, dead-on-arrival claims and partner RMA under enterprise SLAs, with an account person assigned to each channel. Link: Service center → /services. Accent word: Warranty.
+   06 Vendors — Fifty global brands on the bench. Dell, Cisco, HPE, Lenovo, Fortinet, APC and the wider enterprise bench, stocked for retailers, resellers and corporate procurement teams across the island. Link: Meet the vendors → /partners. Accent word: Fifty.
+   To show it again: put this intro and these six items back in pillars.tsx and the pillars array in lib/content.ts.
