@@ -1054,7 +1054,8 @@ header .btn-ink:hover {
    ------------------------------------------------------------------ */
 #stock,
 #desk,
-#news {
+#news,
+#island {
   scroll-margin-top: 4.5rem;
 }
 .pi-scrub {

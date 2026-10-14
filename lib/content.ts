@@ -92,7 +92,7 @@ export const pillars = [
     description:
       "Orders leave the Colombo hub and reach partners in any corner of the island. The turnaround is 24 to 48 hours.",
     link: "View the dispatch hubs",
-    href: "/contact#hubs",
+    href: "#island",
   },
   {
     tag: "Consulting",
