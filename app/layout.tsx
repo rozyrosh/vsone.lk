@@ -29,15 +29,10 @@ export const metadata: Metadata = {
     "VS One supplies 200+ partners across Sri Lanka with Dell, Cisco, HPE, Lenovo, Fortinet and APC hardware, island-wide logistics in 24 to 48 hours, and the country's first ERP partner portal.",
   icons: {
     icon: [
-      {
-        url:
-          "data:image/svg+xml," +
-          encodeURIComponent(
-            `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><rect width="32" height="32" rx="8" fill="#0f1115"/><path d="M16 5v16" stroke="#c9cfd9" stroke-width="2" stroke-linecap="round"/><circle cx="16" cy="24" r="3.5" fill="#bb001e"/></svg>`,
-          ),
-        type: "image/svg+xml",
-      },
+      { url: "/favicon-32.png", sizes: "32x32", type: "image/png" },
+      { url: "/favicon-192.png", sizes: "192x192", type: "image/png" },
     ],
+    apple: [{ url: "/apple-touch-icon.png", sizes: "180x180", type: "image/png" }],
   },
 };
 
