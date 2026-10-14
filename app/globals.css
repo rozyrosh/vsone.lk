@@ -1052,6 +1052,11 @@ header .btn-ink:hover {
 /* ------------------------------------------------------------------
    Pillars: vertical cut reveal, one title at a time
    ------------------------------------------------------------------ */
+#stock,
+#desk,
+#news {
+  scroll-margin-top: 4.5rem;
+}
 .pi-scrub {
   --p: 0;
   position: relative;

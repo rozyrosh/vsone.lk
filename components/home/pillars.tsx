@@ -94,7 +94,7 @@ export function Pillars() {
         stage.style.setProperty("--p", p.toFixed(4));
       }
       const stageRect = stage.getBoundingClientRect();
-      const reached = stageRect.top <= 8 && stageRect.bottom >= window.innerHeight * 0.6;
+      const reached = stageRect.top <= 72 && stageRect.bottom >= window.innerHeight * 0.6;
       const showIntro = reached && p < 0.1;
       if (showIntro !== introOn) {
         introOn = showIntro;

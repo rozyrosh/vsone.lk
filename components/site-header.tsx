@@ -11,6 +11,15 @@ function active(pathname: string, href: string) {
   return pathname === href || pathname.startsWith(`${href}/`);
 }
 
+function itemHref(pathname: string, href: string) {
+  const onHome = pathname === "/" || pathname === "/home-2";
+  if (href === "/services") return onHome ? "#desk-work" : "/#desk-work";
+  if (href === "/offerings") return onHome ? "#stock" : "/#stock";
+  if (href === "/partners") return onHome ? "#desk" : "/#desk";
+  if (href === "/news") return onHome ? "#news" : "/#news";
+  return href;
+}
+
 export function SiteHeader() {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
@@ -55,10 +64,11 @@ export function SiteHeader() {
         <nav className="hidden lg:flex items-center gap-1" aria-label="Primary">
           {nav.map((item) => {
             const current = active(pathname, item.href);
+            const href = itemHref(pathname, item.href);
             return (
               <Link
                 key={item.href}
-                href={item.href}
+                href={href}
                 aria-current={current ? "page" : undefined}
                 className={`relative px-space-sm py-space-xs rounded-full font-label-md text-label-md transition-colors duration-300 ${current ? "text-graphite font-semibold" : "text-steel hover:text-graphite"}`}
               >
@@ -87,8 +97,9 @@ export function SiteHeader() {
         <nav className="lg:hidden border-t border-hairline bg-panel px-gutter-mobile py-space-md flex flex-col gap-1 max-h-[calc(100svh-4rem-env(safe-area-inset-top))] overflow-y-auto" aria-label="Mobile">
           {nav.map((item) => {
             const current = active(pathname, item.href);
+            const href = itemHref(pathname, item.href);
             return (
-              <Link key={item.href} href={item.href} onClick={() => setOpen(false)} className={`min-h-11 flex items-center px-space-md py-space-sm rounded-[10px] font-label-md text-label-md ${current ? "bg-mist text-graphite font-semibold" : "text-steel"}`}>
+              <Link key={item.href} href={href} onClick={() => setOpen(false)} className={`min-h-11 flex items-center px-space-md py-space-sm rounded-[10px] font-label-md text-label-md ${current ? "bg-mist text-graphite font-semibold" : "text-steel"}`}>
                 {item.label}
               </Link>
             );
