@@ -12,6 +12,7 @@ export default function ContactPage() {
         eyebrow="Contact"
         title="Talk to the Colombo desk."
         summary="Partnerships, stock, warranty, and Experience Center visits are handled from Thimbirigasyaya Road."
+        image="/hero-2/hero-poster.jpg"
       />
       <section className="max-w-canvas mx-auto px-gutter-mobile lg:px-gutter-desktop py-space-3xl grid grid-cols-1 lg:grid-cols-12 gap-space-2xl">
         <div className="lg:col-span-4 flex flex-col gap-space-md">

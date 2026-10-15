@@ -56,8 +56,8 @@ function HeroCtas() {
           <Symbol name="arrow_forward" className="text-[16px]" />
         </span>
       </Link>
-      <Link href="/products" className="btn btn-ghost">
-        Browse the products
+      <Link href="#desk-work" className="btn btn-ghost">
+        Explore Solutions
       </Link>
     </div>
   );

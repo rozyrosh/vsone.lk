@@ -1514,7 +1514,7 @@ header .btn-ink:hover {
 }
 .people-tilt-title {
   margin: 14px auto 0;
-  max-width: 16ch;
+  max-width: 34ch;
   text-align: center;
   color: #121418;
   font-family: var(--font-jakarta), "Plus Jakarta Sans", sans-serif;
@@ -1560,6 +1560,16 @@ header .btn-ink:hover {
 .channel-supply-viewport {
   position: relative;
   overflow: hidden;
+  cursor: grab;
+  touch-action: pan-y;
+  user-select: none;
+}
+.channel-supply.is-dragging .channel-supply-viewport {
+  cursor: grabbing;
+}
+.channel-supply-cta a,
+.channel-supply-dots button {
+  cursor: pointer;
 }
 .channel-supply-track {
   display: flex;

@@ -35,10 +35,10 @@ export const brands = [
 ] as const;
 
 export const metrics = [
-  { label: "Partners", icon: "hub", value: 200, suffix: "+", detail: "Authorized resellers, retailers and integrators across the island" },
-  { label: "Brands", icon: "public", value: 50, suffix: "+", detail: "Global vendors stocked and allocated from one desk" },
-  { label: "Provinces", icon: "map", value: 9, suffix: " of 9", detail: "Doorstep delivery in 24 to 48 hours from Colombo" },
-  { label: "Portal", icon: "deployed_code", value: 1, suffix: "st", detail: "ERP-integrated partner portal in Sri Lanka" },
+  { label: "Channel reach", icon: "hub", value: 200, suffix: "+", detail: "Island-wide\npartners" },
+  { label: "GLOBAL BRANDS", icon: "public", value: 50, suffix: "+", detail: "Globally recognized technology brands" },
+  { label: "GEOGRAPHIC SCOPE", icon: "map", value: 9, suffix: " of 9", detail: "Provinces with partners and doorstep delivery" },
+  { label: "INNOVATION FIRST", icon: "deployed_code", value: 1, suffix: "st", detail: "Customer experience center in Sri Lanka" },
 ];
 
 export const portalSteps = [
@@ -151,7 +151,7 @@ export const offerings: Offering[] = [
     badge: "Compute",
     badgeTone: "dark",
     summary:
-      "High-end business notebooks, desktop towers, industrial monitors, thermal components, and specialized graphics workstations.",
+      "Notebooks, desktops, printers, monitors, IT accessories and workstations from the best brands",
     meta: "12 Subcategories",
     image: "/catalog/studio-compute.jpg",
     alt: "A silver business laptop with a blue screen on a white studio surface",
@@ -162,7 +162,7 @@ export const offerings: Offering[] = [
     badge: "Security",
     badgeTone: "crimson",
     summary:
-      "Managed Layer-3 switches, mesh access points, next-gen UTM firewalls, intelligent CCTV surveillance, and endpoint suites.",
+      "Switches, access points, routers, CCTV products and endpoint security products from the best brands.",
     meta: "18 Brands",
     image: "/catalog/studio-network.jpg",
     alt: "A white rackmount network switch with a row of blue port lights",
@@ -173,7 +173,7 @@ export const offerings: Offering[] = [
     badge: "Infrastructure",
     badgeTone: "dark",
     summary:
-      "Blade and rackmount servers, SAN/NAS storage arrays, precision UPS systems, intelligent PDU distribution, and acoustic enclosures.",
+      "Servers, storage, networking products, UPS systems, racks and enclosures.",
     meta: "Tier-1 Certified",
     image: "/catalog/studio-server.jpg",
     alt: "White rackmount servers with blue status lights in a datacenter",
@@ -184,7 +184,7 @@ export const offerings: Offering[] = [
     badge: "AV Systems",
     badgeTone: "muted",
     summary:
-      "Collaborative smart boards, LED commercial signage, digital indoor controllers, conference bars, and call center headsets.",
+      "Smart boards, digital signage, indoor and outdoor displays and controllers, plus call center, conference and industrial audio systems.",
     meta: "Meeting rooms",
     image: "/catalog/studio-av.jpg",
     alt: "A white meeting room with a wall display and a conference speaker",
@@ -324,12 +324,12 @@ export const hubs = [
 ];
 
 export const channels = [
-  { icon: "storefront", title: "Direct Retail Showrooms", summary: "Supplying turnkey consumer hardware, displays, and consumer electronics to prime street-front and mall tech retailers." },
+  { icon: "storefront", title: "Direct Retail Showrooms", summary: "We supply IT products and services to retail showrooms that bring our brands closer to individual customers." },
   { icon: "terminal", title: "IT Resellers", summary: "Full bills of materials for corporate and SME IT procurement, with tiered volume margins." },
-  { icon: "device_hub", title: "System Integrators", summary: "Dedicated pre-sales engineers and sandbox labs to support high-stake RFP bids for telecommunications, banking, and government." },
-  { icon: "warehouse", title: "Sub Distributors", summary: "District-level supply arrangements to ensure consistent buffer inventory and reliable second-tier distribution channels." },
-  { icon: "shopping_bag", title: "Large-Format Retailers", summary: "Coordinated promotional campaigns, merchandising setups, and bulk SKU deliveries across nationwide consumer store networks." },
-  { icon: "shopping_cart", title: "E-Commerce Marketplaces", summary: "API-driven automated stock synchronization and drop-ship logistics to facilitate rapid online marketplace sales." },
+  { icon: "device_hub", title: "System Integrators", summary: "Products and services for system integrators, with solutions customized to industry specifications." },
+  { icon: "warehouse", title: "Sub Distributors", summary: "World-class products and services that help sub distributors strengthen their operations and serve their stakeholders." },
+  { icon: "shopping_bag", title: "Large-Format Retailers", summary: "Effective, seamless distribution of our products and solutions to large-format retailers across the country." },
+  { icon: "shopping_cart", title: "E-Commerce Marketplaces", summary: "Global brands and reliable solutions for e-commerce partners, supported by the online stores VS One operates." },
 ];
 
 export const services = [

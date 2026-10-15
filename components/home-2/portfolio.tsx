@@ -30,16 +30,16 @@ export function Portfolio() {
       <div className="relative max-w-canvas mx-auto px-gutter-mobile lg:px-gutter-desktop">
         <div className="text-center max-w-2xl mx-auto mb-space-2xl">
           <p className="kicker kicker-on-dark part justify-center" style={{ "--i": 0 } as React.CSSProperties}>
-            <i /> What we stock <i />
+            <i /> Our products portfolio <i />
           </p>
           <h2
             className="display part text-headline-lg-mobile lg:text-headline-lg mt-space-sm"
             style={{ "--i": 1, color: "#fff" } as React.CSSProperties}
           >
-            Fifty categories. Four shelves.
+            More than 50 products from world-renowned brands.
           </h2>
           <p className="part font-body-md text-body-md mt-space-sm text-white/70" style={{ "--i": 2 } as React.CSSProperties}>
-            Compute, network and security, datacenter, and rooms. The lines below are sample photography; partners see live quantities in the portal.
+            A full range of IT products for every industry, making VS One the one-stop destination for partners&apos; critical technology demands.
           </p>
         </div>
 

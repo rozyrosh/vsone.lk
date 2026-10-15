@@ -63,13 +63,13 @@ export function Footprint() {
 
           <div className="order-1 lg:order-2 flex flex-col gap-space-md">
           <p className="kicker part" style={{ "--i": 0 } as React.CSSProperties}>
-            <i /> Where the boxes go
+            <i /> National footprint
           </p>
-          <h2 className="display part text-headline-lg-mobile lg:text-headline-lg max-w-[16ch]" style={{ "--i": 1 } as React.CSSProperties}>
-            Nine provinces, <span style={{ color: "#013D65" }}>two days.</span>
+          <h2 className="display part text-headline-lg-mobile lg:text-headline-lg max-w-[22ch]" style={{ "--i": 1 } as React.CSSProperties}>
+            Global brands, delivered to every corner of the island.
           </h2>
           <p className="part font-body-md text-body-md text-steel max-w-[46ch]" style={{ "--i": 2 } as React.CSSProperties}>
-            Regional hubs and channel managers take the bottleneck out of distribution outside Colombo. Pick a province to see how many partners already buy there.
+            Our partners are located around the island. Our mission is to extend our partner ecosystem to even the most remote areas of Sri Lanka, so every community can access globally recognized brands and industry-leading solutions.
           </p>
           <div className="part grid grid-cols-3 gap-px bg-hairline border border-hairline rounded-[4px] overflow-hidden mt-space-xs" style={{ "--i": 3 } as React.CSSProperties}>
             {provinceBadges.map((item) => {
@@ -84,7 +84,7 @@ export function Footprint() {
             })}
           </div>
           <Link href="/contact" className="part u-line self-start inline-flex items-center gap-2 font-label-md text-label-md font-semibold text-graphite mt-space-xs" style={{ "--i": 4 } as React.CSSProperties}>
-            Contact Us
+            Become a Partner in Your Region
             <Symbol name="east" className="text-[18px] text-crimson" />
           </Link>
           </div>

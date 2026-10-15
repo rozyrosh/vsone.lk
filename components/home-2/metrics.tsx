@@ -37,7 +37,7 @@ export function Metrics() {
                     <Count value={item.value} />
                     <span className="text-[0.55em] align-baseline ml-0.5" style={{ color: "#fff" }}>{item.suffix}</span>
                   </span>
-                  <p className="font-body-sm text-[12px] leading-snug text-white/75 mt-1 max-w-[22ch]">{item.detail}</p>
+                  <p className="font-body-sm text-[12px] leading-snug text-white/75 mt-1 max-w-[22ch] whitespace-pre-line">{item.detail}</p>
                 </dd>
               </div>
             ))}

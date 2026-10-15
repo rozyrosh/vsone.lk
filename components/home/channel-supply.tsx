@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Symbol } from "../symbol";
 
 const sectors = [
@@ -10,48 +10,53 @@ const sectors = [
     alt: "A mall electronics showroom with laptops and displays under navy light.",
     title: "Direct Retail Showrooms",
     summary:
-      "Supplying turnkey consumer hardware, displays, and consumer electronics to prime street-front and mall tech retailers.",
+      "We supply IT products and services to retail showrooms that bring our brands closer to individual customers.",
   },
   {
     image: "/ecosystem/resellers.png",
     alt: "Business laptops and enterprise hardware laid out for an IT reseller.",
     title: "IT Resellers",
     summary:
-      "End-to-end commercial solutions for corporate and SME IT procurement, providing tiered volume margins.",
+      "Products and services for IT resellers serving the commercial and industrial sectors.",
   },
   {
     image: "/ecosystem/integrators.png",
     alt: "A system integrator lab with network racks and an engineer at a monitor.",
     title: "System Integrators",
     summary:
-      "Dedicated pre-sales engineers and sandbox labs to support high-stake RFP bids for telecommunications, banking, and government.",
+      "Products and services for system integrators, with solutions customized to industry specifications.",
   },
   {
     image: "/ecosystem/distributors.png",
     alt: "An orderly warehouse aisle of sealed hardware cartons.",
     title: "Sub Distributors",
     summary:
-      "District-level supply arrangements to ensure consistent buffer inventory and reliable second-tier distribution channels.",
+      "World-class products and services that help sub distributors strengthen their operations and serve their stakeholders.",
   },
   {
     image: "/ecosystem/retailers.png",
     alt: "A wide large-format electronics retail floor with display aisles.",
     title: "Large-Format Retailers",
     summary:
-      "Coordinated promotional campaigns, merchandising setups, and bulk SKU deliveries across nationwide consumer store networks.",
+      "Effective, seamless distribution of our products and solutions to large-format retailers across the country.",
   },
   {
     image: "/ecosystem/marketplaces.png",
     alt: "An e-commerce packing bench with parcels and a laptop.",
     title: "E-Commerce Marketplaces",
     summary:
-      "API-driven automated stock synchronization and drop-ship logistics to facilitate rapid online marketplace sales.",
+      "Global brands and reliable solutions for e-commerce partners, supported by the online stores VS One operates.",
   },
 ];
 
 export function ChannelSupply() {
   const [index, setIndex] = useState(0);
   const [paused, setPaused] = useState(false);
+  const [dragX, setDragX] = useState(0);
+  const [dragging, setDragging] = useState(false);
+  const viewportRef = useRef<HTMLDivElement>(null);
+  const dragRef = useRef<{ x: number; dx: number } | null>(null);
+  const suppressClick = useRef(false);
   const count = sectors.length;
 
   useEffect(() => {
@@ -67,21 +72,76 @@ export function ChannelSupply() {
     setIndex((next + count) % count);
   }
 
+  function onPointerDown(event: React.PointerEvent<HTMLDivElement>) {
+    if (event.button !== 0) return;
+    if ((event.target as HTMLElement).closest(".channel-supply-nav, a, button")) return;
+    dragRef.current = { x: event.clientX, dx: 0 };
+    setDragging(true);
+    setPaused(true);
+    try {
+      event.currentTarget.setPointerCapture(event.pointerId);
+    } catch {
+      /* A synthetic pointer has nothing to capture. */
+    }
+  }
+
+  function onPointerMove(event: React.PointerEvent<HTMLDivElement>) {
+    const drag = dragRef.current;
+    if (!drag) return;
+    drag.dx = event.clientX - drag.x;
+    setDragX(drag.dx);
+  }
+
+  function onPointerUp(event: React.PointerEvent<HTMLDivElement>) {
+    const drag = dragRef.current;
+    if (!drag) return;
+    dragRef.current = null;
+    if (event.currentTarget.hasPointerCapture?.(event.pointerId)) {
+      event.currentTarget.releasePointerCapture(event.pointerId);
+    }
+    const width = viewportRef.current?.clientWidth || 1;
+    const moved = Math.abs(drag.dx) > 8;
+    if (moved) suppressClick.current = true;
+    setDragging(false);
+    setDragX(0);
+    if (drag.dx <= -Math.min(80, width * 0.12)) go(index + 1);
+    else if (drag.dx >= Math.min(80, width * 0.12)) go(index - 1);
+    if (event.pointerType !== "mouse") setPaused(false);
+  }
+
   return (
     <section
       id="ecosystem"
-      className="channel-supply reveal"
+      className={`channel-supply reveal${dragging ? " is-dragging" : ""}`}
       aria-roledescription="carousel"
       aria-labelledby="ecosystem-title"
       onMouseEnter={() => setPaused(true)}
-      onMouseLeave={() => setPaused(false)}
+      onMouseLeave={() => {
+        if (!dragRef.current) setPaused(false);
+      }}
       onFocus={() => setPaused(true)}
       onBlur={() => setPaused(false)}
     >
-      <div className="channel-supply-viewport">
+      <div
+        ref={viewportRef}
+        className="channel-supply-viewport"
+        onPointerDown={onPointerDown}
+        onPointerMove={onPointerMove}
+        onPointerUp={onPointerUp}
+        onPointerCancel={onPointerUp}
+        onClickCapture={(event) => {
+          if (!suppressClick.current) return;
+          event.preventDefault();
+          event.stopPropagation();
+          suppressClick.current = false;
+        }}
+      >
         <div
           className="channel-supply-track"
-          style={{ transform: `translateX(-${index * 100}%)` }}
+          style={{
+            transform: `translateX(calc(-${index * 100}% + ${dragX}px))`,
+            transition: dragging ? "none" : undefined,
+          }}
         >
           {sectors.map((item, i) => (
             <article
@@ -106,12 +166,12 @@ export function ChannelSupply() {
                     </span>
                   </Link>
                   <Link href="/products" className="btn btn-ghost" tabIndex={i === index ? 0 : -1}>
-                    Browse the catalog
+                    Browse the Products
                   </Link>
                 </div>
               </div>
               <figure className="channel-supply-figure">
-                <img src={item.image} alt={i === index ? item.alt : ""} />
+                <img src={item.image} alt={i === index ? item.alt : ""} draggable={false} />
               </figure>
             </article>
           ))}

@@ -43,7 +43,7 @@ export function CatalogSearch() {
           onFocus={() => setOpen(true)}
           onBlur={() => window.setTimeout(() => setOpen(false), 150)}
           className="min-w-0 w-full bg-transparent border-none outline-none font-body-md text-body-md text-graphite placeholder:text-outline px-space-xs"
-          placeholder="Search a product, brand or SKU. Try Cisco, PowerEdge or FortiGate"
+          placeholder="Search products, brands or categories (e.g. HP, Samsung, QNAP)…"
           type="search"
           autoComplete="off"
         />

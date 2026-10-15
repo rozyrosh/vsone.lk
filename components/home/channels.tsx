@@ -78,24 +78,34 @@ export function Channels() {
 
     let seekBusy = false;
     let pendingTime: number | null = null;
-    function requestSeek(t: number) {
-      if (!video.duration || !Number.isFinite(t)) return;
-      if (seekBusy) {
-        pendingTime = t;
-        return;
-      }
-      seekBusy = true;
-      video.currentTime = t;
-    }
-    video.addEventListener("seeked", () => {
+    let seekTimer = 0;
+    function releaseSeek() {
+      window.clearTimeout(seekTimer);
       seekBusy = false;
       if (pendingTime !== null) {
         const t = pendingTime;
         pendingTime = null;
         requestSeek(t);
       }
-    });
+    }
+    function requestSeek(t: number) {
+      if (!video.duration || !Number.isFinite(t)) return;
+      if (seekBusy) {
+        pendingTime = t;
+        return;
+      }
+      if (!video.seeking && Math.abs(video.currentTime - t) < 0.05) return;
+      seekBusy = true;
+      seekTimer = window.setTimeout(releaseSeek, 800);
+      try {
+        video.currentTime = t;
+      } catch {
+        releaseSeek();
+      }
+    }
+    video.addEventListener("seeked", releaseSeek);
     video.addEventListener("error", () => {
+      window.clearTimeout(seekTimer);
       seekBusy = false;
       pendingTime = null;
       failVideo();
@@ -163,7 +173,7 @@ export function Channels() {
 
     async function loadBlob() {
       const ctrl = new AbortController();
-      const watchdog = setTimeout(() => ctrl.abort(), 25000);
+      let watchdog = window.setTimeout(() => ctrl.abort(), 25000);
       const res = await fetch(channelsMedia.video, { signal: ctrl.signal, priority: "low" } as RequestInit);
       if (!res.ok || !res.body) throw new Error("channels video unavailable");
       const total = Number(res.headers.get("Content-Length")) || channelsMedia.bytes;
@@ -174,6 +184,8 @@ export function Channels() {
       for (;;) {
         const { done, value } = await reader.read();
         if (done) break;
+        window.clearTimeout(watchdog);
+        watchdog = window.setTimeout(() => ctrl.abort(), 25000);
         chunks.push(value);
         got += value.length;
         const frac = Math.min(1, got / total);
@@ -183,13 +195,21 @@ export function Channels() {
           ring.style.strokeDashoffset = String(Math.round(126 * (1 - frac)));
         }
       }
-      clearTimeout(watchdog);
+      window.clearTimeout(watchdog);
       video.src = URL.createObjectURL(new Blob(chunks as BlobPart[], { type: "video/mp4" }));
+      video.muted = true;
       video.load();
       video.addEventListener(
-        "loadedmetadata",
+        "canplay",
         () => {
-          requestSeek(progress() * video.duration);
+          const seek = () => requestSeek(progress() * video.duration);
+          const prime = video.play();
+          if (prime && typeof prime.then === "function") {
+            prime.then(() => {
+              video.pause();
+              seek();
+            }).catch(seek);
+          } else seek();
           stage.classList.add("video-ready");
           cue.classList.add("no-video");
         },
@@ -220,7 +240,7 @@ export function Channels() {
           const start = () => {
             if (started) return;
             started = true;
-            loadBlob().catch(failVideo);
+            loadBlob().catch(() => loadBlob().catch(failVideo));
           };
           const img = new Image();
           img.onload = start;
