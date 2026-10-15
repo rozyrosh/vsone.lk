@@ -1,6 +1,6 @@
 "use client";
 
-import { articles, channels } from "@/lib/content";
+import { articles, offers } from "@/lib/content";
 import { channelsMedia } from "@/lib/channels-media";
 import Link from "next/link";
 import { useEffect, useRef } from "react";
@@ -42,8 +42,8 @@ const smoothstep = (p: number, e0: number, e1: number) => {
 function ChannelCta() {
   return (
     <div className="cta">
-      <Link href="/partners" className="btn btn-ink">
-        Meet the partners
+      <Link href="/products" className="btn btn-ink">
+        Explore Portfolio
         <span className="dot">
           <Symbol name="arrow_forward" className="text-[16px]" />
         </span>
@@ -301,7 +301,7 @@ export function Channels() {
 
   return (
     <>
-      <section ref={section} id="channels" data-stop className="ch-scrub" aria-label="Who we supply">
+      <section ref={section} id="channels" data-stop className="ch-scrub" aria-label="What we offer">
         <div className={channelsMedia.ending ? "ch-stage has-static" : "ch-stage"}>
           <div className="ch-media" aria-hidden="true">
             <div className="ch-poster" />
@@ -313,28 +313,28 @@ export function Channels() {
           <div className="ch-scrim" aria-hidden="true" />
           <div className="ch-grid" aria-hidden="true" />
           <div className="ch-washes" aria-hidden="true">
-            {channels.map((_, i) => (
+            {offers.map((_, i) => (
               <div key={i} className={`ch-wash ${SIDE[i] === "band-left" ? "ch-wash-left" : "ch-wash-right"}`} data-band={i} />
             ))}
           </div>
 
           <header className="ch-intro">
             <p className="kicker kicker-on-dark">
-              <i /> Who we supply
+              <i /> What we offer
             </p>
             <h2 className="ch-headline">
-              Six channels, one
+              What we offer
               <br />
-              portal.
+              our partners.
             </h2>
-            <p className="ch-dek">Showrooms, resellers, integrators, and marketplaces. Each channel buys through the same portal.</p>
+            <p className="ch-dek">Distribution, partner management, channel support, rewards, warranty, and financial services.</p>
           </header>
 
-          {channels.map((item, i) => (
+          {offers.map((item, i) => (
             <div key={item.title} className={`band ch-band ${SIDE[i]} ${FX[i]}`} data-band={i}>
               <span className="kicker">
                 {i % 2 === 0 ? <i /> : null}
-                {String(i + 1).padStart(2, "0")} / Channel
+                {String(i + 1).padStart(2, "0")} / Offer
                 {i % 2 === 1 ? <i /> : null}
               </span>
               <p className="headline">{item.title}</p>
@@ -354,10 +354,10 @@ export function Channels() {
         </div>
       </section>
 
-      <section className="ch-static-list reveal" aria-label="Partner channels list">
+      <section className="ch-static-list reveal" aria-label="What we offer">
         <div className="max-w-canvas mx-auto px-gutter-mobile lg:px-gutter-desktop">
           <ol className="grid grid-cols-1 md:grid-cols-2 gap-x-space-2xl border-t border-hairline">
-            {channels.map((channel, i) => (
+            {offers.map((channel, i) => (
               <li key={channel.title} className="part border-b border-hairline" style={{ "--i": i } as React.CSSProperties}>
                 <Link href="/partners" className="row-link group flex items-start gap-space-md py-space-md pl-0 pr-space-sm rounded-[10px]">
                   <span className="font-mono text-[11px] tracking-[0.14em] text-outline pt-1.5 w-7 shrink-0">0{i + 1}</span>

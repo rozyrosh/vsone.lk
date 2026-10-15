@@ -323,6 +323,15 @@ export const hubs = [
   { city: "North, East & Uva", role: "Island reach", detail: "Dedicated channel managers for remote provinces." },
 ];
 
+export const offers = [
+  { icon: "inventory_2", title: "Value-Added Distributor", summary: "We are the one-stop destination for our partners for all their ICT-related products and services requirements, from client compute to datacenter equipment and enterprise software." },
+  { icon: "groups", title: "Partner Management", summary: "Recruitment, accreditation and specialization, business planning, business management, credit terms and logistics management, all handled for our partners." },
+  { icon: "campaign", title: "Channel Support & Business Development", summary: "Pre-sales support, demo equipment, RFP response support, demand generation activities, events and PR." },
+  { icon: "emoji_events", title: "Performance Evaluation & Rewards", summary: "Performance evaluations, incentives, promotions and attractive rebate schemes for our partners." },
+  { icon: "build", title: "Repair & Warranty Management", summary: "We work closely with our partners to deliver Service Level Agreements for repairs and warranty management." },
+  { icon: "account_balance", title: "Financial Services", summary: "Tailor-made financial schemes and credit terms for the convenience of our partners." },
+];
+
 export const channels = [
   { icon: "storefront", title: "Direct Retail Showrooms", summary: "We supply IT products and services to retail showrooms that bring our brands closer to individual customers." },
   { icon: "terminal", title: "IT Resellers", summary: "Full bills of materials for corporate and SME IT procurement, with tiered volume margins." },

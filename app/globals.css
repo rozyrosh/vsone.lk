@@ -1341,7 +1341,6 @@ header .btn-ink:hover {
   line-height: 1.06;
   font-size: clamp(26px, 3.4vw, 42px);
   color: #fff;
-  text-shadow: 0 12px 28px rgba(0, 0, 0, 0.4);
 }
 .ch-dek {
   margin: 0.9rem auto 0;
