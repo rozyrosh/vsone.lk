@@ -31,7 +31,7 @@ export function LoginForm() {
   }
 
   return (
-    <form onSubmit={onSubmit} className="flex flex-col gap-space-md max-w-md">
+    <form onSubmit={onSubmit} className="flex flex-col gap-space-md">
       <label className="flex flex-col gap-space-2xs font-label-sm text-label-sm text-on-surface-variant">
         Email
         <input name="email" type="email" required className={field} autoComplete="username" />

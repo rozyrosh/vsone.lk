@@ -337,7 +337,17 @@ export function Channels() {
                 {String(i + 1).padStart(2, "0")} / Offer
                 {i % 2 === 1 ? <i /> : null}
               </span>
-              <p className="headline">{item.title}</p>
+              <p className="headline">
+                {item.title === "Performance Evaluation & Rewards" ? (
+                  <>
+                    Performance
+                    <br />
+                    Evaluation & Rewards
+                  </>
+                ) : (
+                  item.title
+                )}
+              </p>
               <p className="sub">{item.summary}</p>
               <ChannelCta />
             </div>
@@ -386,10 +396,10 @@ export function NewsStrip() {
         <div className="flex items-end justify-between gap-space-md mb-space-xl">
           <div>
             <p className="kicker part" style={{ "--i": 0 } as React.CSSProperties}>
-              <i /> Inside VS One
+              <i /> News & events
             </p>
             <h2 className="display part text-headline-lg-mobile lg:text-headline-lg mt-space-sm" style={{ "--i": 1 } as React.CSSProperties}>
-              What changed lately.
+              Inside VS One.
             </h2>
           </div>
           <Link href="/news" className="part u-line hidden sm:inline-flex items-center gap-2 font-label-md text-label-md font-semibold text-graphite" style={{ "--i": 2 } as React.CSSProperties}>
@@ -430,14 +440,14 @@ export function JoinBanner() {
               <i /> Join the network <i />
             </p>
             <h2 className="display part text-headline-lg-mobile lg:text-[56px] lg:leading-[1] mt-space-md" style={{ "--i": 2 } as React.CSSProperties}>
-              Get on the portal. Get allocated.
+              Ready to elevate your ICT distribution reach?
             </h2>
             <p className="part font-body-md text-body-md lg:text-body-lg text-steel mt-space-md max-w-[52ch] mx-auto" style={{ "--i": 3 } as React.CSSProperties}>
-              Fifty brands, credit terms, engineers on your bid and a box at your door in two days. The application takes a few minutes and the desk calls you back.
+              Join our islandwide partner network for continuous business growth. Get access to 25+ global brands, pre-sales and technical support, tailored credit terms and attractive rebate schemes.
             </p>
             <div className="part mt-space-xl flex flex-col sm:flex-row items-center justify-center gap-space-sm" style={{ "--i": 4 } as React.CSSProperties}>
               <Link href="/partner-portal/apply" className="btn btn-accent w-full sm:w-auto">
-                Apply for partnership
+                Become A Partner
                 <Symbol name="arrow_forward" className="text-[16px]" />
               </Link>
               <a href="tel:+94112592121" className="btn btn-ghost w-full sm:w-auto">

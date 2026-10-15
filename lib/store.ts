@@ -36,13 +36,26 @@ export type PartnerAccount = {
   createdAt: string;
 };
 
+export type PartnerEnquiry = {
+  id: string;
+  role: string;
+  name: string;
+  company: string;
+  phone: string;
+  district: string;
+  interest: string;
+  message: string;
+  createdAt: string;
+};
+
 type Db = {
   inquiries: Inquiry[];
   subscribers: Subscriber[];
   partners: PartnerAccount[];
+  partnerEnquiries: PartnerEnquiry[];
 };
 
-const empty: Db = { inquiries: [], subscribers: [], partners: [] };
+const empty: Db = { inquiries: [], subscribers: [], partners: [], partnerEnquiries: [] };
 
 let chain: Promise<unknown> = Promise.resolve();
 
@@ -63,9 +76,10 @@ async function readDb(): Promise<Db> {
       inquiries: parsed.inquiries ?? [],
       subscribers: parsed.subscribers ?? [],
       partners: parsed.partners ?? [],
+      partnerEnquiries: parsed.partnerEnquiries ?? [],
     };
   } catch {
-    return { ...empty, inquiries: [], subscribers: [], partners: [] };
+    return { ...empty, inquiries: [], subscribers: [], partners: [], partnerEnquiries: [] };
   }
 }
 
@@ -117,6 +131,20 @@ export async function addSubscriber(email: string) {
     db.subscribers.push(subscriber);
     await writeDb(db);
     return { created: true as const, subscriber };
+  });
+}
+
+export async function addPartnerEnquiry(input: Omit<PartnerEnquiry, "id" | "createdAt">) {
+  return withLock(async () => {
+    const db = await readDb();
+    const enquiry: PartnerEnquiry = {
+      ...input,
+      id: reference("ENQ"),
+      createdAt: new Date().toISOString(),
+    };
+    db.partnerEnquiries.push(enquiry);
+    await writeDb(db);
+    return enquiry;
   });
 }
 

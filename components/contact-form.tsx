@@ -31,23 +31,23 @@ export function ContactForm() {
 
   return (
     <form onSubmit={onSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-space-md">
-      <label className="flex flex-col gap-space-2xs font-label-sm text-label-sm text-on-surface-variant">
+      <label className="flex flex-col gap-space-2xs font-label-md text-label-md text-on-surface">
         Name
         <input name="name" required className={field} autoComplete="name" />
       </label>
-      <label className="flex flex-col gap-space-2xs font-label-sm text-label-sm text-on-surface-variant">
+      <label className="flex flex-col gap-space-2xs font-label-md text-label-md text-on-surface">
         Company
         <input name="company" className={field} autoComplete="organization" />
       </label>
-      <label className="flex flex-col gap-space-2xs font-label-sm text-label-sm text-on-surface-variant">
+      <label className="flex flex-col gap-space-2xs font-label-md text-label-md text-on-surface">
         Email
         <input name="email" type="email" required className={field} autoComplete="email" />
       </label>
-      <label className="flex flex-col gap-space-2xs font-label-sm text-label-sm text-on-surface-variant">
+      <label className="flex flex-col gap-space-2xs font-label-md text-label-md text-on-surface">
         Phone
         <input name="phone" className={field} autoComplete="tel" />
       </label>
-      <label className="md:col-span-2 flex flex-col gap-space-2xs font-label-sm text-label-sm text-on-surface-variant">
+      <label className="md:col-span-2 flex flex-col gap-space-2xs font-label-md text-label-md text-on-surface">
         Topic
         <select name="topic" required className={field} defaultValue="Product availability">
           <option>Partnership</option>
@@ -57,12 +57,12 @@ export function ContactForm() {
           <option>Press</option>
         </select>
       </label>
-      <label className="md:col-span-2 flex flex-col gap-space-2xs font-label-sm text-label-sm text-on-surface-variant">
+      <label className="md:col-span-2 flex flex-col gap-space-2xs font-label-md text-label-md text-on-surface">
         Message
         <textarea name="message" required rows={5} className={field} />
       </label>
       <div className="md:col-span-2 flex flex-col sm:flex-row sm:items-center gap-space-md">
-        <button type="submit" disabled={status === "loading"} className="px-space-xl py-space-sm rounded-full bg-primary text-on-primary font-label-md text-label-md font-semibold hover:bg-primary-container disabled:opacity-60">
+        <button type="submit" disabled={status === "loading"} className="px-space-xl py-space-sm rounded-full bg-[#013D65] text-white font-label-md text-label-md font-semibold hover:bg-[#012844] disabled:opacity-60">
           {status === "loading" ? "Sending" : "Send message"}
         </button>
         {message ? <p className={`font-body-sm text-body-sm ${status === "error" ? "text-secondary" : "text-on-surface"}`}>{message}</p> : null}

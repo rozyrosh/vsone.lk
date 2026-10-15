@@ -1,6 +1,7 @@
 import { ContactForm } from "@/components/contact-form";
 import { PageHero } from "@/components/page-hero";
-import { ADDRESS, EMAIL, PHONE_DISPLAY, PHONE_TEL, hubs } from "@/lib/content";
+import { Symbol } from "@/components/symbol";
+import { ADDRESS, EMAIL, LOGO, PHONE_DISPLAY, PHONE_TEL, hubs } from "@/lib/content";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = { title: "Contact Us" };
@@ -12,15 +13,25 @@ export default function ContactPage() {
         eyebrow="Contact"
         title="Talk to the Colombo desk."
         summary="Partnerships, stock, warranty, and Experience Center visits are handled from Thimbirigasyaya Road."
-        image="/hero-2/hero-poster.jpg"
+        images={["/contact/1377.jpg"]}
       />
       <section className="max-w-canvas mx-auto px-gutter-mobile lg:px-gutter-desktop py-space-3xl grid grid-cols-1 lg:grid-cols-12 gap-space-2xl">
         <div className="lg:col-span-4 flex flex-col gap-space-md">
-          <p className="font-body-md text-body-md text-on-surface-variant">{ADDRESS}</p>
-          <a className="font-label-md text-label-md font-semibold hover:text-secondary" href={`tel:${PHONE_TEL}`}>{PHONE_DISPLAY}</a>
-          <a className="font-label-md text-label-md font-semibold hover:text-secondary" href={`mailto:${EMAIL}`}>{EMAIL}</a>
+          <img src={LOGO} alt="VS One" className="h-10 w-auto object-contain self-start" />
+          <p className="flex items-start gap-space-xs font-body-md text-body-md text-on-surface-variant">
+            <Symbol name="location_on" className="text-[18px] text-crimson mt-0.5 shrink-0" />
+            <span>{ADDRESS}</span>
+          </p>
+          <a className="flex items-center gap-space-xs font-label-md text-label-md font-semibold hover:text-secondary" href={`tel:${PHONE_TEL}`}>
+            <Symbol name="call" className="text-[18px] text-crimson shrink-0" />
+            {PHONE_DISPLAY}
+          </a>
+          <a className="flex items-center gap-space-xs font-label-md text-label-md font-semibold hover:text-secondary" href={`mailto:${EMAIL}`}>
+            <Symbol name="mail" className="text-[18px] text-crimson shrink-0" />
+            {EMAIL}
+          </a>
         </div>
-        <div className="lg:col-span-8 p-space-lg rounded-3xl bg-surface-container-lowest shadow-sm">
+        <div className="lg:col-span-8 p-space-lg rounded-[8px] bg-surface-container-lowest shadow-sm">
           <ContactForm />
         </div>
       </section>

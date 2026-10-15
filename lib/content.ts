@@ -109,7 +109,7 @@ export const pillars = [
     title: "Online stores for partners",
     description:
       "VS One runs storefronts so a partner can take orders online without standing up a shop of their own.",
-    link: "Ask about store services",
+    link: "Talk to our team",
     href: "/contact",
   },
   {
@@ -371,6 +371,8 @@ export type Article = {
   date: string;
   title: string;
   summary: string;
+  image: string;
+  category: string;
   body: string[];
 };
 
@@ -381,6 +383,8 @@ export const articles: Article[] = [
     title: "Opening of Customer Convenience Service Center",
     summary:
       "VS One inaugurated an upgraded convenience center at our Colombo head office, enhancing turnaround times for device repairs, DOA claims, and partner RMA requests.",
+    image: "/contact/1686.jpg",
+    category: "Service center",
     body: [
       "VS One inaugurated an upgraded convenience center at the Colombo head office on Thimbirigasyaya Road. The floor is set up for device repairs, dead-on-arrival claims, and partner RMA intake in one visit.",
       "Authorized partners can book a drop-off against their portal account. Serial checks happen at the counter, and status returns through the same ERP record used for the original shipment.",
@@ -393,6 +397,8 @@ export const articles: Article[] = [
     title: "Inauguration of the Enterprise Experience Center",
     summary:
       "Partners and enterprise buyers can now evaluate live interactive digital smart boards, conference room acoustics, and high-density compute clusters in real time.",
+    image: "/catalog/studio-av.jpg",
+    category: "Experience floor",
     body: [
       "The Enterprise Experience Center gives partners and enterprise buyers a working room instead of a slide. Interactive boards, conference acoustics, and high-density compute are installed and powered.",
       "Pre-sales architects use the floor for RFP walkthroughs covering telecommunications, banking, and government bids. Integrators can compare displays, audio bars, and rack configurations before they commit stock.",
@@ -405,6 +411,8 @@ export const articles: Article[] = [
     title: "ERP Partner Portal 2.0 Feature Release",
     summary:
       "New instant credit line requests, direct vendor serial number validations, and automated shipment tracking are now live for all registered resellers.",
+    image: "/pillars/portal.jpg",
+    category: "Partner portal",
     body: [
       "Portal 2.0 is live for registered resellers. Instant credit line requests, vendor serial validation, and automated shipment tracking sit beside the stock and warranty tools from the first release.",
       "A reseller can confirm a serial before a DOA is raised, then follow the replacement from the Colombo hub to the province without a separate status call.",

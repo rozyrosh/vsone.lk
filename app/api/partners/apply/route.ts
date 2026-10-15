@@ -1,56 +1,82 @@
 import { NextResponse } from "next/server";
-import { setSession } from "@/lib/session";
-import { addPartner, publicPartner } from "@/lib/store";
-import { clean, isEmail, requireFields } from "@/lib/validators";
+import { addPartnerEnquiry } from "@/lib/store";
+import { clean, requireFields } from "@/lib/validators";
 
-const channels = new Set([
-  "Direct Retail Showrooms",
-  "IT Resellers",
-  "System Integrators",
-  "Sub Distributors",
-  "Large-Format Retailers",
-  "E-Commerce Marketplaces",
+const roles = new Set([
+  "IT reseller",
+  "Retail showroom",
+  "System integrator",
+  "Sub distributor",
+  "E-commerce seller",
+  "Brand / vendor",
+]);
+
+const districts = new Set([
+  "Colombo",
+  "Gampaha",
+  "Kalutara",
+  "Kandy",
+  "Matale",
+  "Nuwara Eliya",
+  "Galle",
+  "Matara",
+  "Hambantota",
+  "Jaffna",
+  "Kilinochchi",
+  "Mannar",
+  "Vavuniya",
+  "Mullaitivu",
+  "Batticaloa",
+  "Ampara",
+  "Trincomalee",
+  "Kurunegala",
+  "Puttalam",
+  "Anuradhapura",
+  "Polonnaruwa",
+  "Badulla",
+  "Monaragala",
+  "Ratnapura",
+  "Kegalle",
+]);
+
+const interests = new Set([
+  "PC & Component",
+  "Network & Security",
+  "Datacenter Systems",
+  "Display & Audio",
+  "Mobile & accessories",
+  "Software & services",
+  "Smart home & office",
 ]);
 
 export async function POST(request: Request) {
   const body = await request.json().catch(() => null);
   const input = {
+    role: clean(body?.role, 80),
+    name: clean(body?.name, 80),
     company: clean(body?.company, 120),
-    contact: clean(body?.contact, 80),
-    email: clean(body?.email, 160).toLowerCase(),
     phone: clean(body?.phone, 40),
-    channel: clean(body?.channel, 80),
-    city: clean(body?.city, 80),
+    district: clean(body?.district, 80),
+    interest: clean(body?.interest, 80),
     message: clean(body?.message, 2000),
-    password: String(body?.password ?? ""),
   };
   const missing = requireFields({
+    role: input.role,
+    name: input.name,
     company: input.company,
-    contact: input.contact,
-    email: input.email,
     phone: input.phone,
-    channel: input.channel,
-    city: input.city,
+    district: input.district,
+    interest: input.interest,
   });
   if (missing.length) {
-    return NextResponse.json({ error: "Complete every field before submitting the application." }, { status: 400 });
+    return NextResponse.json({ error: "Complete every field before sending the enquiry." }, { status: 400 });
   }
-  if (!isEmail(input.email)) {
-    return NextResponse.json({ error: "Enter a valid email address." }, { status: 400 });
+  if (!roles.has(input.role) || !districts.has(input.district) || !interests.has(input.interest)) {
+    return NextResponse.json({ error: "Choose a role, district, and interest from the lists." }, { status: 400 });
   }
-  if (!channels.has(input.channel)) {
-    return NextResponse.json({ error: "Choose a channel we supply." }, { status: 400 });
-  }
-  if (input.password.length < 8) {
-    return NextResponse.json({ error: "Use a password of at least 8 characters." }, { status: 400 });
-  }
-  const result = await addPartner(input);
-  if (!result.ok) {
-    return NextResponse.json({ error: result.error }, { status: 409 });
-  }
-  await setSession(result.partner.email);
+  const enquiry = await addPartnerEnquiry(input);
   return NextResponse.json({
-    message: `Application ${result.partner.id} is under review. You can sign in with this email.`,
-    partner: publicPartner(result.partner),
+    message: `Received. Your reference is ${enquiry.id}. The Colombo desk will call you back.`,
+    id: enquiry.id,
   });
 }

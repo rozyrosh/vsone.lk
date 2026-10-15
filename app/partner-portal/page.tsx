@@ -17,6 +17,7 @@ export default async function PortalPage() {
   return (
     <>
       <PageHero
+        align="center"
         eyebrow="Partner Portal"
         title={profile ? `Welcome, ${profile.company}.` : "Sign in to the ERP partner portal."}
         summary={
@@ -27,7 +28,7 @@ export default async function PortalPage() {
       />
       <section className="max-w-canvas mx-auto px-gutter-mobile lg:px-gutter-desktop py-space-3xl">
         {profile ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-space-lg max-w-4xl">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-space-lg max-w-4xl mx-auto">
             <article className="panel p-space-lg">
               <p className="kicker">
                 <i /> Application
@@ -63,7 +64,7 @@ export default async function PortalPage() {
             </article>
           </div>
         ) : (
-          <div className="panel p-space-lg md:p-space-xl max-w-xl">
+          <div className="panel p-space-lg md:p-space-xl max-w-xl mx-auto">
             <LoginForm />
             <p className="font-body-sm text-body-sm text-on-surface-variant mt-space-lg">
               No account yet? <Link href="/partner-portal/apply" className="text-secondary font-semibold">Apply for partnership</Link>
