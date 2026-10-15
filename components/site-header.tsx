@@ -3,8 +3,20 @@
 import { LOGO, nav } from "@/lib/content";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Symbol } from "./symbol";
+
+const productMenu = [
+  { href: "/products?category=compute", icon: "computer", title: "PC & Component", detail: "Notebooks, desktops, printers, monitors, workstations" },
+  { href: "/products?category=network", icon: "shield", title: "Network & Security", detail: "Switches, access points, routers, CCTV, endpoint security" },
+  { href: "/products?category=datacenter", icon: "dns", title: "Datacenter Equipment", detail: "Servers, storage, UPS systems, racks and enclosures" },
+  { href: "/products?category=display", icon: "tv", title: "Display Solutions", detail: "Smart boards, digital signage, displays and controllers" },
+  { href: "/products?category=display", icon: "headphones", title: "Audio Solutions", detail: "Call center, conference and industrial audio" },
+  { href: "/products?category=mobile", icon: "smartphone", title: "Mobile & Accessories", detail: "Phones, personal gadgets and accessories" },
+  { href: "/products?category=automation", icon: "home", title: "Smart Home & Office", detail: "Switches, controllers, sensors, gateways, smart locks" },
+  { href: "/products?category=software", icon: "code", title: "Software & Services", detail: "Device management, managed printing, ERP, CRM, design" },
+  { href: "/products", icon: "inventory_2", title: "Full catalogue", detail: "Browse every product on the Partner Portal →" },
+];
 
 function active(pathname: string, href: string) {
   if (href === "/") return pathname === "/";
@@ -23,7 +35,19 @@ function itemHref(pathname: string, href: string) {
 export function SiteHeader() {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
+  const [productsOpen, setProductsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const closeProductsTimer = useRef<number | null>(null);
+
+  function openProducts() {
+    if (closeProductsTimer.current !== null) window.clearTimeout(closeProductsTimer.current);
+    setProductsOpen(true);
+  }
+
+  function closeProducts() {
+    if (closeProductsTimer.current !== null) window.clearTimeout(closeProductsTimer.current);
+    closeProductsTimer.current = window.setTimeout(() => setProductsOpen(false), 140);
+  }
 
   useEffect(() => {
     let raf: number | null = null;
@@ -45,7 +69,16 @@ export function SiteHeader() {
     };
   }, []);
 
-  useEffect(() => setOpen(false), [pathname]);
+  useEffect(() => {
+    setOpen(false);
+    setProductsOpen(false);
+  }, [pathname]);
+
+  useEffect(() => {
+    return () => {
+      if (closeProductsTimer.current !== null) window.clearTimeout(closeProductsTimer.current);
+    };
+  }, []);
 
   useEffect(() => {
     document.body.style.overflow = open ? "hidden" : "";
@@ -65,15 +98,22 @@ export function SiteHeader() {
           {nav.map((item) => {
             const current = active(pathname, item.href);
             const href = itemHref(pathname, item.href);
+            const products = item.href === "/products";
             return (
               <Link
                 key={item.href}
                 href={href}
                 aria-current={current ? "page" : undefined}
-                className={`relative px-space-sm py-space-xs rounded-full font-label-md text-label-md transition-colors duration-300 ${current ? "text-graphite font-semibold" : "text-steel hover:text-graphite"}`}
+                aria-expanded={products ? productsOpen : undefined}
+                aria-haspopup={products ? "true" : undefined}
+                onMouseEnter={products ? openProducts : undefined}
+                onMouseLeave={products ? closeProducts : undefined}
+                onFocus={products ? openProducts : undefined}
+                onBlur={products ? closeProducts : undefined}
+                className={`relative px-space-sm py-space-xs rounded-full font-label-md text-label-md transition-colors duration-300 ${current || (products && productsOpen) ? "text-graphite font-semibold" : "text-steel hover:text-graphite"}`}
               >
                 {item.label}
-                <span className={`absolute left-space-sm right-space-sm -bottom-px h-px bg-crimson transition-transform duration-500 ease-out origin-left ${current ? "scale-x-100" : "scale-x-0"}`} aria-hidden="true" />
+                <span className={`absolute left-space-sm right-space-sm -bottom-px h-px bg-crimson transition-transform duration-500 ease-out origin-left ${current || (products && productsOpen) ? "scale-x-100" : "scale-x-0"}`} aria-hidden="true" />
               </Link>
             );
           })}
@@ -90,6 +130,26 @@ export function SiteHeader() {
           <button type="button" className="lg:hidden w-11 h-11 rounded-full border border-hairline bg-panel flex items-center justify-center" aria-expanded={open} aria-label={open ? "Close menu" : "Open menu"} onClick={() => setOpen((value) => !value)}>
             <Symbol name={open ? "close" : "menu"} className="text-[20px]" />
           </button>
+        </div>
+      </div>
+
+      <div
+        className={`hidden lg:block absolute left-0 right-0 top-full border-t border-hairline bg-panel shadow-[0_22px_40px_-28px_rgba(15,17,21,0.45)] transition duration-200 ${productsOpen ? "visible opacity-100" : "invisible pointer-events-none opacity-0"}`}
+        onMouseEnter={openProducts}
+        onMouseLeave={closeProducts}
+      >
+        <div className="max-w-canvas mx-auto px-gutter-desktop py-space-xl grid grid-cols-4 gap-x-space-xl gap-y-space-lg">
+          {productMenu.map((item) => (
+            <Link key={item.title} href={item.href} className="group flex items-start gap-space-sm rounded-[10px] p-space-xs -m-space-xs hover:bg-mist/70">
+              <span className="w-11 h-11 rounded-xl bg-crimson/10 text-crimson grid place-items-center shrink-0">
+                <Symbol name={item.icon} className="text-[22px]" />
+              </span>
+              <span>
+                <span className="block font-label-md text-[15px] font-semibold text-graphite leading-snug">{item.title}</span>
+                <span className="block mt-0.5 font-body-sm text-[13px] leading-snug text-steel">{item.detail}</span>
+              </span>
+            </Link>
+          ))}
         </div>
       </div>
 

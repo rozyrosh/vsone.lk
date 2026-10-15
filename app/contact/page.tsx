@@ -41,7 +41,7 @@ export default function ContactPage() {
           {hubs.map((hub) => (
             <article key={hub.city} className="p-space-lg rounded-2xl bg-surface-container-low">
               <h3 className="font-label-md text-label-md font-bold">{hub.city}</h3>
-              <p className="font-label-sm text-label-sm text-secondary mt-space-2xs">{hub.role}</p>
+              <p className="font-label-md text-label-md text-secondary mt-space-2xs">{hub.role}</p>
               <p className="font-body-sm text-body-sm text-on-surface-variant mt-space-xs">{hub.detail}</p>
             </article>
           ))}

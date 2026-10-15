@@ -409,12 +409,15 @@ export function NewsStrip() {
         </div>
         <div className="flex flex-col">
           {articles.map((article, i) => (
-            <Link key={article.slug} href={`/news/${article.slug}`} className="part group grid grid-cols-1 md:grid-cols-12 gap-space-sm md:gap-space-lg items-baseline py-space-lg border-t border-hairline last:border-b hover:bg-panel/70 transition-colors duration-500 rounded-[6px] md:px-space-sm" style={{ "--i": 2 + i } as React.CSSProperties}>
+            <Link key={article.slug} href={`/news/${article.slug}`} className="part group relative grid grid-cols-1 md:grid-cols-12 gap-space-sm md:gap-space-lg items-baseline py-space-lg border-t border-hairline last:border-b hover:bg-panel/70 transition-colors duration-500 rounded-[6px] md:px-space-sm" style={{ "--i": 2 + i } as React.CSSProperties}>
               <span className="md:col-span-2 font-mono text-[11px] tracking-[0.12em] uppercase text-outline">{article.date}</span>
               <span className="md:col-span-6 font-display text-[22px] lg:text-[26px] font-bold tracking-tight text-graphite leading-tight">{article.title}</span>
               <span className="md:col-span-3 font-body-sm text-body-sm text-steel line-clamp-2">{article.summary}</span>
               <span className="md:col-span-1 justify-self-end">
                 <Symbol name="east" className="text-[20px] text-crimson transition-transform duration-500 group-hover:translate-x-1" />
+              </span>
+              <span className="news-pop pointer-events-none absolute z-20 hidden md:block right-[12%] bottom-[calc(100%-18px)] w-[240px] opacity-0 translate-y-3 group-hover:pointer-events-auto group-hover:opacity-100 group-hover:translate-y-0 transition duration-300">
+                <img src={article.image} alt="" className="w-full aspect-[4/3] object-cover rounded-md bg-surface-container shadow-[0_22px_40px_-18px_rgba(15,17,21,0.5)]" />
               </span>
             </Link>
           ))}
