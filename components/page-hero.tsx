@@ -48,6 +48,8 @@ export function PageHero({
   align,
   onDark,
   tone,
+  titleWeight,
+  overlay,
 }: {
   eyebrow: string;
   title: string;
@@ -57,6 +59,8 @@ export function PageHero({
   align?: "center";
   onDark?: boolean;
   tone?: "blue";
+  titleWeight?: number;
+  overlay?: "wide";
 }) {
   const slides = images?.length ? images : image ? [image] : [];
   const light = Boolean(slides.length || onDark || tone === "blue");
@@ -72,7 +76,9 @@ export function PageHero({
             className="pointer-events-none absolute inset-0 z-[2]"
             style={{
               background:
-                "linear-gradient(90deg, rgba(1,61,101,0.92) 0%, rgba(1,61,101,0.78) 32%, rgba(1,61,101,0.22) 58%, rgba(1,61,101,0) 100%)",
+                overlay === "wide"
+                  ? "linear-gradient(90deg, rgba(1,61,101,0.92) 0%, rgba(1,61,101,0.78) 44%, rgba(1,61,101,0.28) 70%, rgba(1,61,101,0) 100%)"
+                  : "linear-gradient(90deg, rgba(1,61,101,0.92) 0%, rgba(1,61,101,0.78) 32%, rgba(1,61,101,0.22) 58%, rgba(1,61,101,0) 100%)",
             }}
           />
       ) : null}
@@ -83,7 +89,7 @@ export function PageHero({
           <p className={`kicker part ${light ? "kicker-on-dark" : ""}`} style={{ "--i": 0 } as React.CSSProperties}>
             <i /> {eyebrow}
           </p>
-          <h1 className="display part text-headline-lg-mobile lg:text-[52px] lg:leading-[1.02] mt-space-sm mx-auto max-w-[16ch]" style={{ "--i": 1, color: light ? "#fff" : undefined } as React.CSSProperties}>
+          <h1 className="display part text-headline-lg-mobile lg:text-[52px] lg:leading-[1.02] mt-space-sm mx-auto max-w-[16ch]" style={{ "--i": 1, color: light ? "#fff" : undefined, fontWeight: titleWeight } as React.CSSProperties}>
             {title}
           </h1>
           <p className={`part font-body-md text-body-md lg:text-body-lg max-w-[46ch] mx-auto mt-space-md ${light ? "text-white/80" : "text-steel"}`} style={{ "--i": 2 } as React.CSSProperties}>
@@ -102,7 +108,7 @@ export function PageHero({
           <p className={`kicker part ${light ? "kicker-on-dark" : ""}`} style={{ "--i": 0 } as React.CSSProperties}>
             <i /> {eyebrow}
           </p>
-          <h1 className="display part text-headline-lg-mobile lg:text-[52px] lg:leading-[1.02] mt-space-sm max-w-[22ch]" style={{ "--i": 1, color: light ? "#fff" : undefined } as React.CSSProperties}>
+          <h1 className="display part text-headline-lg-mobile lg:text-[52px] lg:leading-[1.02] mt-space-sm max-w-[22ch]" style={{ "--i": 1, color: light ? "#fff" : undefined, fontWeight: titleWeight } as React.CSSProperties}>
             {title}
           </h1>
         </div>

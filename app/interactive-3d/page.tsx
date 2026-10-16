@@ -7,7 +7,7 @@ export const metadata: Metadata = {
 
 export default function Interactive3DPage() {
   return (
-    <main className="max-w-canvas mx-auto px-gutter-mobile lg:px-gutter-desktop py-space-2xl">
+    <main className="reveal max-w-canvas mx-auto px-gutter-mobile lg:px-gutter-desktop py-space-2xl">
       <p className="kicker mb-space-md">
         <i /> Spline robot
       </p>

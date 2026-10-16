@@ -1,7 +1,7 @@
 import { ContactForm } from "@/components/contact-form";
 import { PageHero } from "@/components/page-hero";
 import { Symbol } from "@/components/symbol";
-import { ADDRESS, EMAIL, LOGO, PHONE_DISPLAY, PHONE_TEL, hubs } from "@/lib/content";
+import { ADDRESS, EMAIL, PHONE_DISPLAY, PHONE_TEL } from "@/lib/content";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = { title: "Contact Us" };
@@ -14,38 +14,68 @@ export default function ContactPage() {
         title="Talk to the Colombo desk."
         summary="Partnerships, stock, warranty, and Experience Center visits are handled from Thimbirigasyaya Road."
         images={["/contact/1377.jpg"]}
+        titleWeight={700}
+        overlay="wide"
       />
-      <section className="max-w-canvas mx-auto px-gutter-mobile lg:px-gutter-desktop py-space-3xl grid grid-cols-1 lg:grid-cols-12 gap-space-2xl">
-        <div className="lg:col-span-4 flex flex-col gap-space-md">
-          <img src={LOGO} alt="VS One" className="h-10 w-auto object-contain self-start" />
-          <p className="flex items-start gap-space-xs font-body-md text-body-md text-on-surface-variant">
-            <Symbol name="location_on" className="text-[18px] text-crimson mt-0.5 shrink-0" />
-            <span>{ADDRESS}</span>
-          </p>
-          <a className="flex items-center gap-space-xs font-label-md text-label-md font-semibold hover:text-secondary" href={`tel:${PHONE_TEL}`}>
-            <Symbol name="call" className="text-[18px] text-crimson shrink-0" />
-            {PHONE_DISPLAY}
-          </a>
-          <a className="flex items-center gap-space-xs font-label-md text-label-md font-semibold hover:text-secondary" href={`mailto:${EMAIL}`}>
-            <Symbol name="mail" className="text-[18px] text-crimson shrink-0" />
-            {EMAIL}
-          </a>
-        </div>
-        <div className="lg:col-span-8 p-space-lg rounded-[8px] bg-surface-container-lowest shadow-sm">
-          <ContactForm />
-        </div>
+      <section aria-label="Map of the Colombo desk">
+        <iframe
+          title="VS One on Google Maps, Thimbirigasyaya Road, Colombo 05"
+          src={`https://maps.google.com/maps?q=${encodeURIComponent(ADDRESS)}&z=16&output=embed`}
+          className="block h-[320px] w-full border-0 sm:h-[420px]"
+          loading="lazy"
+          referrerPolicy="no-referrer-when-downgrade"
+          allowFullScreen
+        />
       </section>
-      <section id="hubs" className="max-w-canvas mx-auto px-gutter-mobile lg:px-gutter-desktop pb-space-4xl">
-        <h2 className="font-headline-lg text-headline-lg-mobile font-bold mb-space-lg">Regional dispatch hubs</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-space-md">
-          {hubs.map((hub) => (
-            <article key={hub.city} className="p-space-lg rounded-2xl bg-surface-container-low">
-              <h3 className="font-label-md text-label-md font-bold">{hub.city}</h3>
-              <p className="font-label-md text-label-md text-secondary mt-space-2xs">{hub.role}</p>
-              <p className="font-body-sm text-body-sm text-on-surface-variant mt-space-xs">{hub.detail}</p>
-            </article>
-          ))}
+
+      <section className="border-y border-hairline bg-panel" aria-label="Desk contacts">
+        <ul className="max-w-canvas mx-auto grid grid-cols-1 md:grid-cols-3">
+          {(
+            [
+              { icon: "location_on", label: "Address", value: ADDRESS, href: "" },
+              { icon: "call", label: "Phone", value: PHONE_DISPLAY, href: `tel:${PHONE_TEL}` },
+              { icon: "mail", label: "Email", value: EMAIL, href: `mailto:${EMAIL}` },
+            ] as const
+          ).map((item) => {
+            const body = (
+              <>
+                <span className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-[#013D65] text-white">
+                  <Symbol name={item.icon} className="!text-[18px]" />
+                </span>
+                <span className="min-w-0">
+                  <span className="block font-mono text-[11px] uppercase tracking-[0.16em] text-steel">{item.label}</span>
+                  <span className="mt-1 block font-label-md text-[15px] font-semibold leading-snug text-graphite">{item.value}</span>
+                </span>
+              </>
+            );
+            return (
+              <li key={item.label} className="border-b border-hairline last:border-b-0 md:border-b-0 md:border-r md:last:border-r-0">
+                {item.href ? (
+                  <a href={item.href} className="flex items-start gap-3 px-gutter-mobile py-5 hover:bg-mist/60 lg:px-gutter-desktop">
+                    {body}
+                  </a>
+                ) : (
+                  <div className="flex items-start gap-3 px-gutter-mobile py-5 lg:px-gutter-desktop">{body}</div>
+                )}
+              </li>
+            );
+          })}
+        </ul>
+      </section>
+
+      <section className="max-w-canvas mx-auto grid grid-cols-1 items-start gap-8 px-gutter-mobile py-12 lg:grid-cols-[minmax(220px,280px)_minmax(0,1fr)] lg:gap-16 lg:px-gutter-desktop lg:py-16">
+        <div className="lg:sticky lg:top-28">
+          <p className="kicker">
+            <i /> Message
+          </p>
+          <h2 className="mt-3 font-display text-[32px] font-bold leading-tight tracking-tight text-graphite">
+            Send a note to <span className="text-[#013D65]">the</span> <span className="text-[#013D65]">desk.</span>
+          </h2>
+          <p className="mt-3 font-body-md text-[15px] leading-relaxed text-steel">
+            Include the bid, the serial, or the visit you need. The reply comes back to the email you enter.
+          </p>
         </div>
+        <ContactForm />
       </section>
     </>
   );

@@ -192,6 +192,21 @@ body {
 .reveal.in.done .draw {
   transition-delay: 0ms;
 }
+/* Sections without staggered parts rise in as one piece.
+   Pinned scroll stages keep their own choreography. */
+.reveal:not(:has(.part)):not(.hero):not(.pi-scrub):not(.ch-scrub) > * {
+  opacity: 0;
+  transform: translate3d(0, 22px, 0);
+  transition: opacity 0.8s var(--ease-out), transform 0.8s var(--ease-out);
+  transition-delay: calc(var(--i, 0) * 90ms);
+}
+.reveal.in:not(:has(.part)):not(.hero):not(.pi-scrub):not(.ch-scrub) > * {
+  opacity: 1;
+  transform: none;
+}
+.reveal.in.done:not(:has(.part)):not(.hero):not(.pi-scrub):not(.ch-scrub) > * {
+  transition-delay: 0ms;
+}
 
 /* a living element per section, whisper level, paused off screen */
 .live .pulse::after {
@@ -2002,7 +2017,8 @@ header .btn-ink:hover {
   body {
     opacity: 1;
   }
-  .reveal .part {
+  .reveal .part,
+  .reveal:not(:has(.part)) > * {
     opacity: 1;
     transform: none;
   }

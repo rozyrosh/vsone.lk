@@ -32,7 +32,7 @@ export default async function ProductPage({ params }: { params: Promise<{ id: st
           <span className="text-on-surface">{product.name}</span>
         </p>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-space-2xl items-start">
+        <div className="reveal grid grid-cols-1 lg:grid-cols-2 gap-space-2xl items-start">
           <div className="rounded-[8px] overflow-hidden bg-surface-container-low border border-surface-variant/70">
             <img src={product.image} alt={product.name} className="w-full aspect-[4/3] object-cover" />
           </div>

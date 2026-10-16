@@ -42,16 +42,21 @@ export function Count({ value, suffix = "", duration = 1400 }: { value: number; 
       raf = requestAnimationFrame(tick);
     }
 
-    if (host.classList.contains("in")) {
-      run();
-      return;
-    }
-    const mo = new MutationObserver(() => {
-      if (host.classList.contains("in")) {
-        mo.disconnect();
+    let played = false;
+    function sync() {
+      const on = host.classList.contains("in");
+      if (on && !played) {
+        played = true;
         run();
+      } else if (!on && played) {
+        played = false;
+        if (raf !== null) cancelAnimationFrame(raf);
+        lastText = "";
+        write("0", performance.now(), true);
       }
-    });
+    }
+    sync();
+    const mo = new MutationObserver(sync);
     mo.observe(host, { attributes: true, attributeFilter: ["class"] });
     const onReduce = () => {
       if (reduce.matches) {
