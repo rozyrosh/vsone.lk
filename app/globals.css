@@ -873,7 +873,7 @@ header .btn-ink:hover {
     display: flex;
     align-items: flex-end;
     justify-content: center;
-    padding: calc(88px + env(safe-area-inset-top, 0px)) 16px 28px;
+    padding: calc(124px + env(safe-area-inset-top, 0px)) 16px 28px;
   }
   .hero-video,
   .hero-loop,
@@ -1918,7 +1918,7 @@ header .btn-ink:hover {
 .apply-stage {
   position: relative;
   isolation: isolate;
-  min-height: calc(100svh - 4rem);
+  min-height: calc(100svh - 6.25rem);
   overflow: hidden;
   background: linear-gradient(165deg, #013d65 0%, #01365a 55%, #012844 100%);
 }

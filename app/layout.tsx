@@ -61,7 +61,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <MotionProvider />
         <div className="page">
           <SiteHeader />
-          <main id="content" tabIndex={-1} className="w-full pt-16 min-h-screen outline-none">
+          <main id="content" tabIndex={-1} className="w-full pt-[6.25rem] min-h-screen outline-none">
             {children}
           </main>
           <SiteFooter />

@@ -1,6 +1,6 @@
 "use client";
 
-import { LOGO, nav } from "@/lib/content";
+import { ADDRESS, EMAIL, LOGO, PHONE_DISPLAY, PHONE_TEL, nav } from "@/lib/content";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
@@ -37,6 +37,7 @@ export function SiteHeader() {
   const [open, setOpen] = useState(false);
   const [productsOpen, setProductsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [barHidden, setBarHidden] = useState(false);
   const closeProductsTimer = useRef<number | null>(null);
 
   function openProducts() {
@@ -51,12 +52,23 @@ export function SiteHeader() {
 
   useEffect(() => {
     let raf: number | null = null;
+    let lastY = window.scrollY;
     const onScroll = () => {
       if (raf !== null) return;
       raf = requestAnimationFrame(() => {
         raf = null;
+        const y = window.scrollY;
+        const delta = y - lastY;
+        lastY = y;
         setScrolled((prev) => {
-          const next = window.scrollY > 24;
+          const next = y > 24;
+          return prev === next ? prev : next;
+        });
+        setBarHidden((prev) => {
+          let next = prev;
+          if (y < 40) next = false;
+          else if (delta > 2) next = true;
+          else if (delta < -2) next = false;
           return prev === next ? prev : next;
         });
       });
@@ -88,13 +100,22 @@ export function SiteHeader() {
   }, [open]);
 
   return (
-    <header className={`fixed top-0 left-0 right-0 z-50 pt-[env(safe-area-inset-top)] transition-[border-color,box-shadow] duration-500 ease-out border-b bg-panel ${scrolled || open ? "border-hairline shadow-[0_1px_0_rgba(15,17,21,0.03)]" : "border-transparent"}`}>
-      <div className="max-w-canvas mx-auto px-gutter-mobile lg:px-gutter-desktop h-16 flex items-center justify-between gap-space-md">
+    <header className={`fixed top-0 left-0 right-0 z-50 pt-[env(safe-area-inset-top)] transition-[border-color,box-shadow,transform] duration-300 ease-out motion-reduce:transition-none border-b bg-panel ${scrolled || open ? "border-hairline shadow-[0_1px_0_rgba(15,17,21,0.03)]" : "border-transparent"} ${barHidden && !open ? "-translate-y-9" : "translate-y-0"}`}>
+      <div className="bg-[#013D65] text-white">
+        <div className="h-9 overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+          <div className="mx-auto flex h-full w-max items-center gap-x-5 px-gutter-mobile lg:px-gutter-desktop whitespace-nowrap font-label-md text-[13px]">
+            <a href={`tel:${PHONE_TEL}`} className="hover:text-white/80">{PHONE_DISPLAY}</a>
+            <a href={`mailto:${EMAIL}`} className="hover:text-white/80">{EMAIL}</a>
+            <span>{ADDRESS.replace(", Sri Lanka", "")}</span>
+          </div>
+        </div>
+      </div>
+      <div className="relative max-w-canvas mx-auto px-gutter-mobile lg:px-gutter-desktop h-16 flex items-center justify-between gap-space-md">
         <Link href="/" className="flex items-center gap-space-sm shrink-0" onClick={() => setOpen(false)} aria-label="VS One home">
           <img src={LOGO} alt="VS One" className="h-7 w-auto object-contain block" />
         </Link>
 
-        <nav className="hidden lg:flex items-center gap-1" aria-label="Primary">
+        <nav className="hidden lg:flex lg:absolute lg:left-1/2 lg:-translate-x-1/2 items-center gap-1" aria-label="Primary">
           {nav.map((item) => {
             const current = active(pathname, item.href);
             const href = itemHref(pathname, item.href);
@@ -119,12 +140,19 @@ export function SiteHeader() {
           })}
         </nav>
 
-        <div className="flex items-center gap-space-sm">
-          <Link href="/contact" className="btn btn-ink !h-10 !pl-4 !pr-1.5 text-[13px]">
-            <span className="hidden sm:inline">Contact us</span>
-            <span className="sm:hidden">Contact</span>
-            <span className="dot !w-7 !h-7 !mr-0">
-              <Symbol name="arrow_forward" className="text-[15px]" />
+        <div className="flex items-center gap-1.5">
+          <Link href="/partner-portal/apply" className="btn btn-ink !h-8 !gap-1.5 !pl-2.5 sm:!pl-3 !pr-1 !text-[11px]">
+            <span className="hidden sm:inline">Become a partner</span>
+            <span className="sm:hidden">Partner</span>
+            <span className="dot !w-[22px] !h-[22px] !mr-0">
+              <Symbol name="arrow_forward" className="!text-[13px]" />
+            </span>
+          </Link>
+          <Link href="/partner-portal" className="btn btn-ink !h-8 !gap-1.5 !pl-2.5 sm:!pl-3 !pr-1 !text-[11px]">
+            <span className="hidden sm:inline">Partner logins</span>
+            <span className="sm:hidden">Logins</span>
+            <span className="dot !w-[22px] !h-[22px] !mr-0">
+              <Symbol name="account_circle" className="!text-[15px]" />
             </span>
           </Link>
           <button type="button" className="lg:hidden w-11 h-11 rounded-full border border-hairline bg-panel flex items-center justify-center" aria-expanded={open} aria-label={open ? "Close menu" : "Open menu"} onClick={() => setOpen((value) => !value)}>
@@ -154,7 +182,7 @@ export function SiteHeader() {
       </div>
 
       {open ? (
-        <nav className="lg:hidden border-t border-hairline bg-panel px-gutter-mobile py-space-md flex flex-col gap-1 max-h-[calc(100svh-4rem-env(safe-area-inset-top))] overflow-y-auto" aria-label="Mobile">
+        <nav className="lg:hidden border-t border-hairline bg-panel px-gutter-mobile py-space-md flex flex-col gap-1 max-h-[calc(100svh-6.25rem-env(safe-area-inset-top))] overflow-y-auto" aria-label="Mobile">
           {nav.map((item) => {
             const current = active(pathname, item.href);
             const href = itemHref(pathname, item.href);
